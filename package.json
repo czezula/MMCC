@@ -1,0 +1,16 @@
+{
+  "name": "marchMadnessCodeChallenge",
+  "version": "1.0.0",
+  "description": "Node NCAA Basketball Tournament Application",
+  "main": "marchMadnessCodeChallenge.js",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  },
+  "engines": {
+    "node": ">=6.2.0"
+  },
+  "scripts": {
+    "pretest": "npm install"
+  },
+  "author": "Chad Zezula <czezula@silasg.com>"
+}

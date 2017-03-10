@@ -1,0 +1,5 @@
+node_modules
+output
+resources/*.json
+resources/*.xlsx
+.idea
