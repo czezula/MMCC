@@ -7,7 +7,7 @@ var gamePredictor = require('./GamePredictor');
 // Set the algorithm used to determine the winner of a game:
 // 1: base on Seed (e.g. - 1 seed would beat a 16 seed)
 // 2: base on which team has better overall stats
-var algorithm = 2;
+var algorithm = 3;
 
 // Read CSV data file containing information for All Schools
 var f = fs.readFileSync(path.join(__dirname, './resources/All_Schools.csv'), {encoding: 'utf-8'}, function(err) {
