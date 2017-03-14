@@ -30,6 +30,8 @@ The output is organized by Round and Region:
 * **Round7-Region1.json**: The Champion!
 
 # Algorithm
-The code contains two algorithms, with the ability to expand to more:
-1. 
-2. 
+The code contains the following algorithms, with the ability to expand to more:
+1. Determines the winner by simply looking at tournament Seed (e.g. - 1 seed beats a 16 seed)
+2. One point awarded to the team with the better rank in each stat.  Team with most points wins.
+3. One point awarded to the team with the better stat (including Rank).  Extra point for a 1 or 2 seed.  Team with most points wins.
+4. One point awarded to the team with the better stat (NOT including Rank).  Extra point for a 1 or 2 seed.  Team with most points wins.

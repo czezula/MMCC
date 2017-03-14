@@ -6,8 +6,11 @@ var gamePredictor = require('./GamePredictor');
 
 // Set the algorithm used to determine the winner of a game:
 // 1: base on Seed (e.g. - 1 seed would beat a 16 seed)
-// 2: base on which team has better overall stats
-var algorithm = 3;
+// 2: base on which team has better Rank in each stat
+// 3: base on which team has better overall stats (including Rank)
+// 4: base on which team has better overall stats (NOT including Rank)
+var algorithm = 4;
+// TODO: Read algorithm from the command line
 
 // Read CSV data file containing information for All Schools
 var f = fs.readFileSync(path.join(__dirname, './resources/All_Schools.csv'), {encoding: 'utf-8'}, function(err) {
@@ -43,10 +46,10 @@ fs.writeFileSync(path.join(__dirname, './resources/All_Schools.json'), JSON.stri
 
 // Pull out those teams that made the tournament sorted by Seed
 var regions = new Array(2);
-regions[0] = _.sortBy(_.where(jsonData, {Region: "N"}), "Seed");
-regions[1] = _.sortBy(_.where(jsonData, {Region: "S"}), "Seed");
-regions[2] = _.sortBy(_.where(jsonData, {Region: "E"}), "Seed");
-regions[3] = _.sortBy(_.where(jsonData, {Region: "W"}), "Seed");
+regions[0] = _.sortBy(_.where(jsonData, {Region: "East"}), "Seed");
+regions[1] = _.sortBy(_.where(jsonData, {Region: "West"}), "Seed");
+regions[2] = _.sortBy(_.where(jsonData, {Region: "Midwest"}), "Seed");
+regions[3] = _.sortBy(_.where(jsonData, {Region: "South"}), "Seed");
 
 // Build the tournament as a multi-dimensional array.  There are six rounds of play in the tournament (and a 7th containing only the champion):
 // round[0]: 32 games, 64 teams - "1st round" of the tournament

@@ -9,6 +9,37 @@ function playGame(teams, algorithm) {
     algorithm = 1
   }
   var totalPtsTeam0 = 0, totalPtsTeam1 = 0;
+  /*
+   * Each team should contain the following stats:
+   * - AdjEM - Adjusted Efficiency Margin
+   * - AdjO - Adjusted Offensive Efficiency: points scored per 100 possessions (adjusted for opponent)
+   * - AdjORank - Ranking of AdjO among all schools
+   * - AdjD - Adjusted Defensive Efficiency: points allowed per 100 possessions (adjusted for opponent)
+   * - AdjDRank - Ranking of AdjD among all schools
+   * - AdjT - Adjusted Tempo: possessions per 40 minutes (adjusted for opponent)
+   * - AdjTRank - Ranking of AdjT among all schools
+   * - Luck - Luck rating
+   * - LuckRank - Ranking of Luck among all schools
+   * - SOSAdjEM - Strength of Schedule - Adjusted Efficiency Margin rating
+   * - SOSAdjEMRank - Ranking of SOSAdjEM among all schools
+   * - SOSOppO - Strength of Schedule - Average Adjusted Offensive Efficiency of opposing offenses
+   * - SOSOppORank - Ranking of SOSOppO among all schools
+   * - SOSOppD - Strength of Schedule - Average Adjusted Defensive Efficiency of opposing defenses
+   * - SOSOppDRank - Ranking of SOSOppD among all schools
+   * - NCSOSAdjEM - Non-Conference Strength of Schedule - Adjusted Efficiency Margin
+   * - NCSOSAdjEMRank - Ranking of NCSOSAdjEM among all schools
+   */
+  var allStats = [
+    "AdjEM",
+    "AdjO", "AdjORank",
+    "AdjD", "AdjDRank",
+    "AdjT", "AdjTRank",
+    "Luck", "LuckRank",
+    "SOSAdjEM", "SOSAdjEMRank",
+    "SOSOppO", "SOSOppORank",
+    "SOSOppD", "SOSOppDRank",
+    "NCSOSAdjEM", "NCSOSAdjEMRank"
+  ];
 
   switch (algorithm) {
     case 1:
@@ -17,46 +48,13 @@ function playGame(teams, algorithm) {
       break;
     case 2:
       /*
-       * Determines the winner by analyzing the following stats:
-       * - AdjEM - Adjusted Efficiency Margin
-       * - AdjO - Adjusted Offensive Efficiency: points scored per 100 possessions (adjusted for opponent)
-       * - AdjORank - Ranking of AdjO among all schools
-       * - AdjD - Adjusted Defensive Efficiency: points allowed per 100 possessions (adjusted for opponent)
-       * - AdjDRank - Ranking of AdjD among all schools
-       * - AdjT - Adjusted Tempo: possessions per 40 minutes (adjusted for opponent)
-       * - AdjTRank - Ranking of AdjT among all schools
-       * - Luck - Luck rating
-       * - LuckRank - Ranking of Luck among all schools
-       * - SOSAdjEM - Strength of Schedule - Adjusted Efficiency Margin rating
-       * - SOSAdjEMRank - Ranking of SOSAdjEM among all schools
-       * - SOSOppO - Strength of Schedule - Average Adjusted Offensive Efficiency of opposing offenses
-       * - SOSOppORank - Ranking of SOSOppO among all schools
-       * - SOSOppD - Strength of Schedule - Average Adjusted Defensive Efficiency of opposing defenses
-       * - SOSOppDRank - Ranking of SOSOppD among all schools
-       * - NCSOSAdjEM - Non-Conference Strength of Schedule - Adjusted Efficiency Margin
-       * - NCSOSAdjEMRank - Ranking of NCSOSAdjEM among all schools
-       *
+       * Determines the winner by analyzing the stats listed above:
        * 1. One point is awarded to the team with the better rank in each stat
        * The team with the most points wins
        */
-      ["AdjORank", "AdjDRank", "AdjTRank", "LuckRank", "SOSAdjEMRank", "SOSOppORank", "SOSOppDRank", "NCSOSAdjEMRank"].forEach(function(stat) {
-        if (teams[0][stat] < teams[1][stat]) {
-          totalPtsTeam0++
-        } else {
-          totalPtsTeam1++
-        }
-      });
-      break;
-    case 3:
-      /*
-       * Determines the winner by analyzing the stats listed in the algorithm above:
-       * 1. One point is awarded to the team with the better rank in each stat
-       * 2. One or more points is awarded to the team that is better in each individual stat.  Extra point for every difference of 10 or more!
-       * The team with the most points wins
-       */
-      ["AdjEM", "AdjO", "AdjORank", "AdjD", "AdjDRank", "AdjT", "AdjTRank", "Luck", "LuckRank", "SOSAdjEM", "SOSAdjEMRank", "SOSOppO", "SOSOppORank", "SOSOppD", "SOSOppDRank", "NCSOSAdjEM", "NCSOSAdjEMRank"].forEach(function(stat) {
+      allStats.forEach(function(stat) {
         if (stat.endsWith('Rank')) {
-          if (teams[0][stat] < teams[1][stat]) {
+          if (teams[0][stat] < teams[1][stat]) {  // The lower the better (e.g. - Rank 1 beats Rank 100)
             totalPtsTeam0++
           } else {
             totalPtsTeam1++
@@ -64,6 +62,66 @@ function playGame(teams, algorithm) {
         }
       });
       break;
+    case 3:
+      /*
+       * Determines the winner by analyzing the stats listed above:
+       * 1. One point is awarded to the team with the better stat (including Rank)
+       * 2. One extra point is awarded to a 1 or 2 Seed
+       * The team with the most points wins
+       */
+      allStats.forEach(function(stat) {
+        if (stat.endsWith('Rank') || stat == 'AdjD' || stat == 'SOSOppD') {
+          if (teams[0][stat] < teams[1][stat]) {  // The lower the better (e.g. - Rank 1 beats Rank 100)
+            totalPtsTeam0++
+          } else {
+            totalPtsTeam1++
+          }
+        } else {
+          if (teams[0][stat] > teams[1][stat]) {  // The higher the better (e.g. - AdjO 100 beats AdjO 10
+            totalPtsTeam0++
+          } else {
+            totalPtsTeam1++
+          }
+        }
+      });
+      // Give a little love to the top 2 seeds
+      if (teams[0].Seed < 3) {
+        totalPtsTeam0++
+      } else if (teams[1].Seed < 3) {
+        totalPtsTeam1++
+      }
+      break;
+    case 4:
+      /*
+       * Determines the winner by analyzing the stats listed above:
+       * 1. One point is awarded to the team with the better stat (ignore Rank)
+       * 2. One extra point is awarded to a 1 or 2 Seed
+       * The team with the most points wins
+       */
+      allStats.forEach(function(stat) {
+        if (stat == 'AdjD' || stat == 'SOSOppD') {
+          if (teams[0][stat] < teams[1][stat]) {  // The lower the better (e.g. - Rank 1 beats Rank 100)
+            totalPtsTeam0++
+          } else {
+            totalPtsTeam1++
+          }
+        } else if (!stat.endsWith('Rank')) {
+          if (teams[0][stat] > teams[1][stat]) {  // The higher the better (e.g. - AdjO 100 beats AdjO 10
+            totalPtsTeam0++
+          } else {
+            totalPtsTeam1++
+          }
+        }
+      });
+      // Give a little love to the top 2 seeds
+      if (teams[0].Seed < 3) {
+        totalPtsTeam0++
+      } else if (teams[1].Seed < 3) {
+        totalPtsTeam1++
+      }
+      break;
+
+    // TODO: Add a more sophisticated algorithm!!
   }
 
   // The team with the most points wins!
