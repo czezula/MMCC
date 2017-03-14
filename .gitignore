@@ -1,5 +1,5 @@
 node_modules
-output
+output/*.json
 resources/*.json
 resources/*.xlsx
 .idea

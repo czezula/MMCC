@@ -1,5 +1,6 @@
 // Node modules
 var fs = require('fs');
+var mkdirp = require('mkdirp');
 var path = require('path');
 var _ = require('underscore');
 var gamePredictor = require('./GamePredictor');
@@ -130,6 +131,12 @@ for (var round = 0; round < 7; round++) {
 
 // Cleanup the contents of the tournament results - only keep the object attributes we care about
 // and write the results to a file...
+try {
+  mkdirp.sync('./output');
+} catch (e) {
+  console.error("Could not create output directory: ", e);
+}
+
 tournament[6][0][0] = _.pick(tournament[6][0][0], 'Team', 'Region', 'Seed');
 for (var i = 0; i < tournament.length; i++) {
   for (var j = 0; j < tournament[i].length; j++) {
