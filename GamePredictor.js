@@ -8,7 +8,7 @@ function playGame(teams, algorithm) {
   if (!algorithm) {
     algorithm = 1
   }
-  var totalPtsTeam0 = 0, totalPtsTeam1 = 0;
+  let totalPtsTeam0 = 0, totalPtsTeam1 = 0
   /*
    * Each team should contain the following stats:
    * - AdjEM - Adjusted Efficiency Margin
@@ -29,7 +29,7 @@ function playGame(teams, algorithm) {
    * - NCSOSAdjEM - Non-Conference Strength of Schedule - Adjusted Efficiency Margin
    * - NCSOSAdjEMRank - Ranking of NCSOSAdjEM among all schools
    */
-  var allStats = [
+  const allStats = [
     "AdjEM",
     "AdjO", "AdjORank",
     "AdjD", "AdjDRank",
@@ -39,16 +39,16 @@ function playGame(teams, algorithm) {
     "SOSOppO", "SOSOppORank",
     "SOSOppD", "SOSOppDRank",
     "NCSOSAdjEM", "NCSOSAdjEMRank"
-  ];
+  ]
 
   switch (algorithm) {
     case 1:
     default:
       // Determines the winner by simply looking at Seed
-      break;
+      break
     case 2:
       /*
-       * Determines the winner by analyzing the stats listed above:
+       * Determines the winner by analyzing the full set of stats listed above:
        * 1. One point is awarded to the team with the better rank in each stat
        * The team with the most points wins
        */
@@ -60,17 +60,17 @@ function playGame(teams, algorithm) {
             totalPtsTeam1++
           }
         }
-      });
-      break;
+      })
+      break
     case 3:
       /*
-       * Determines the winner by analyzing the stats listed above:
+       * Determines the winner by analyzing the full set of stats listed above:
        * 1. One point is awarded to the team with the better stat (including Rank)
        * 2. One extra point is awarded to a 1 or 2 Seed
        * The team with the most points wins
        */
       allStats.forEach(function(stat) {
-        if (stat.endsWith('Rank') || stat == 'AdjD' || stat == 'SOSOppD') {
+        if (stat.endsWith('Rank') || stat === 'AdjD' || stat === 'SOSOppD') {
           if (teams[0][stat] < teams[1][stat]) {  // The lower the better (e.g. - Rank 1 beats Rank 100)
             totalPtsTeam0++
           } else {
@@ -83,23 +83,23 @@ function playGame(teams, algorithm) {
             totalPtsTeam1++
           }
         }
-      });
+      })
       // Give a little love to the top 2 seeds
       if (teams[0].Seed < 3) {
         totalPtsTeam0++
       } else if (teams[1].Seed < 3) {
         totalPtsTeam1++
       }
-      break;
+      break
     case 4:
       /*
-       * Determines the winner by analyzing the stats listed above:
+       * Determines the winner by analyzing the full set of stats listed above:
        * 1. One point is awarded to the team with the better stat (ignore Rank)
        * 2. One extra point is awarded to a 1 or 2 Seed
        * The team with the most points wins
        */
       allStats.forEach(function(stat) {
-        if (stat == 'AdjD' || stat == 'SOSOppD') {
+        if (stat === 'AdjD' || stat === 'SOSOppD') {
           if (teams[0][stat] < teams[1][stat]) {  // The lower the better (e.g. - Rank 1 beats Rank 100)
             totalPtsTeam0++
           } else {
@@ -112,14 +112,14 @@ function playGame(teams, algorithm) {
             totalPtsTeam1++
           }
         }
-      });
+      })
       // Give a little love to the top 2 seeds
       if (teams[0].Seed < 3) {
         totalPtsTeam0++
       } else if (teams[1].Seed < 3) {
         totalPtsTeam1++
       }
-      break;
+      break
 
     // TODO: Add a more sophisticated algorithm!!
   }
@@ -131,10 +131,10 @@ function playGame(teams, algorithm) {
     return teams[1]
   } else {
     // Pts are tied, so just return the better seed - lower number is better (i.e. = 1 seed is better than 16 seed)
-    return teams[0].Seed <= teams[1].Seed ? teams[0] : teams[1];
+    return teams[0].Seed <= teams[1].Seed ? teams[0] : teams[1]
   }
 }
 
 module.exports = {
   playGame: playGame
-};
+}

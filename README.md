@@ -6,7 +6,7 @@ the matchup winner could be modified to consider multiple factors in
 predicting the winner.
 
 ## Instructions
-* Install node.js 6.x or higher: [https://nodejs.org](https://nodejs.org/en/)
+* Install node.js 8.x or higher: [https://nodejs.org](https://nodejs.org/en/)
 * From the project directory, download and install the node modules:
     * `npm install`
 * Run the code:
