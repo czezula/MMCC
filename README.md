@@ -15,7 +15,7 @@ predicting the winner.
     * **Output**: *./output*
 
 ## Resources
-Source team information was obtained from [2017 Pomeroy College Basketball Ratings](http://kenpom.com/)
+Source team information was obtained from [Pomeroy College Basketball Ratings](http://kenpom.com/)
 and saved as All_Schools.csv.  Tournament seeding information was added, and the code converts the data
 to JSON before saving it to *./resources/All_Schools.json*.
 
