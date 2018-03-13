@@ -1,5 +1,6 @@
 node_modules
-output/*.json
+#output/*.json
 resources/*.json
 resources/*.xlsx
+resources/Header.csv
 .idea

@@ -47,10 +47,10 @@ fs.writeFileSync(path.join(__dirname, './resources/All_Schools.json'), JSON.stri
 
 // Pull out those teams that made the tournament sorted by Seed
 let regions = new Array(2)
-regions[0] = _.sortBy(_.where(jsonData, {Region: "East"}), "Seed")
+regions[0] = _.sortBy(_.where(jsonData, {Region: "South"}), "Seed")
 regions[1] = _.sortBy(_.where(jsonData, {Region: "West"}), "Seed")
-regions[2] = _.sortBy(_.where(jsonData, {Region: "Midwest"}), "Seed")
-regions[3] = _.sortBy(_.where(jsonData, {Region: "South"}), "Seed")
+regions[2] = _.sortBy(_.where(jsonData, {Region: "East"}), "Seed")
+regions[3] = _.sortBy(_.where(jsonData, {Region: "Midwest"}), "Seed")
 
 // Build the tournament as a multi-dimensional array.  There are six rounds of play in the tournament (and a 7th containing only the champion):
 // round[0]: 32 games, 64 teams - "1st round" of the tournament
