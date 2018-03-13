@@ -46,7 +46,7 @@ fs.writeFileSync(path.join(__dirname, './resources/All_Schools.json'), JSON.stri
 })
 
 // Pull out those teams that made the tournament sorted by Seed
-let regions = new Array(2)
+let regions = []
 regions[0] = _.sortBy(_.where(jsonData, {Region: "South"}), "Seed")
 regions[1] = _.sortBy(_.where(jsonData, {Region: "West"}), "Seed")
 regions[2] = _.sortBy(_.where(jsonData, {Region: "East"}), "Seed")
